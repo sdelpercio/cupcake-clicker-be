@@ -1,6 +1,10 @@
 exports.up = function (knex) {
   return knex.schema.createTable("item_counts", (table) => {
-    table.integer("user_id").references("id").inTable("users");
+    table
+      .integer("user_id")
+      .references("id")
+      .inTable("users")
+      .onDelete("CASCADE");
     table.integer("total").defaultTo(0);
     table.integer("cupcakes").defaultTo(0);
     table.integer("toasters").defaultTo(0);
