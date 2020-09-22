@@ -46,3 +46,32 @@ async function add(user) {
 function findById(id) {
   return db("users").where({ id }).first();
 }
+
+function updateItemCounts(user_id, update) {
+  db("item_counts").where({ user_id }).update(
+    {
+      total: update.total,
+      cupcakes: update.cupcakes,
+      toasters: update.toasters,
+      ovens: update.ovens,
+      industrialOvens: update.industrialOvens,
+      friends: update.friends,
+      chefs: update.chefs,
+      cupcakeGods: update.cupcakeGods,
+    },
+    ["total"]
+  );
+}
+function updateItemCosts(user_id, update) {
+  db("item_costs").where({ user_id }).update(
+    {
+      toastersCost: update.toastersCost,
+      ovensCost: update.ovensCost,
+      industrialOvensCost: update.industrialOvensCost,
+      friendsCost: update.friendsCost,
+      chefsCost: update.chefsCost,
+      cupcakeGodsCost: update.cupcakeGodsCost,
+    },
+    ["toastersCost"]
+  );
+}

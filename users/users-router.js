@@ -26,6 +26,34 @@ router.get("/:id", verifyUserId, (req, res) => {
     });
 });
 
+// UPDATE USER INFO
+router.put("/:id", verifyUserId, (req, res) => {
+  const user_id = req.params.id;
+  const update = req.body;
+
+  Users.updateItemCounts(user_id, update)
+    .then((check) => {
+      if (check.length !== 1) {
+        res.status(400).json({ message: "Failed to update item counts" });
+      } else {
+        Users.updateItemCosts(user_id, update)
+          .then((check) => {
+            if (check.length !== 1) {
+              res.status(400).json({ message: "Failed to update item counts" });
+            } else {
+              res.status(200).json({ message: "Info correctly updated!" });
+            }
+          })
+          .catch((err) => {
+            res.status(400).json({ error: err });
+          });
+      }
+    })
+    .catch((err) => {
+      res.status(400).json({ error: err });
+    });
+});
+
 // ---------------------- Custom Middleware ---------------------- //
 
 function verifyUserId(req, res, next) {
