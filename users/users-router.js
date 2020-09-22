@@ -6,10 +6,10 @@ const Users = require("./users-model.js");
 
 router.get("/", (req, res) => {
   Users.find()
-    .then(users => {
+    .then((users) => {
       res.status(200).json(users);
     })
-    .catch(err => {
+    .catch((err) => {
       res.status(500).json(err);
     });
 });
@@ -18,30 +18,39 @@ router.get("/:id", verifyUserId, (req, res) => {
   const id = req.params.id;
 
   Users.findById(id)
-    .then(user => {
+    .then((user) => {
       res.status(200).json(user);
     })
-    .catch(err => {
+    .catch((err) => {
       res.status(500).json(err);
     });
 });
 
-router.get("/:id/tasks", verifyUserId, (req, res) => {
-  const id = req.params.id;
+// UPDATE USER INFO
+router.put("/:id", verifyUserId, (req, res) => {
+  const user_id = req.params.id;
+  const update = req.body;
 
-  Users.findById(id)
-    .then(user => {
-      Users.getTasksByUserId(id)
-        .then(tasks => {
-          res.status(200).json({ ...user, tasks });
-          console.log(user, tasks);
-        })
-        .catch(err => {
-          res.status(500).json(err);
-        });
+  Users.updateItemCounts(user_id, update)
+    .then((check) => {
+      if (check.length !== 1) {
+        res.status(400).json({ message: "Failed to update item counts" });
+      } else {
+        Users.updateItemCosts(user_id, update)
+          .then((check) => {
+            if (check.length !== 1) {
+              res.status(400).json({ message: "Failed to update item counts" });
+            } else {
+              res.status(200).json({ message: "Info correctly updated!" });
+            }
+          })
+          .catch((err) => {
+            res.status(400).json({ error: err });
+          });
+      }
     })
-    .catch(err => {
-      res.status(500).json(err);
+    .catch((err) => {
+      res.status(400).json({ error: err });
     });
 });
 
@@ -51,7 +60,7 @@ function verifyUserId(req, res, next) {
   const id = req.params.id;
 
   Users.findById(id)
-    .then(item => {
+    .then((item) => {
       if (item) {
         req.item = item;
         next();
@@ -59,7 +68,7 @@ function verifyUserId(req, res, next) {
         res.status(404).json({ message: "User Not Found." });
       }
     })
-    .catch(err => {
+    .catch((err) => {
       res.status(500).json(err);
     });
 }
