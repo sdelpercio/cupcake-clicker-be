@@ -12,12 +12,12 @@ router.post("/register", validateUserContent, (req, res) => {
   user.password = hash;
 
   Users.add(user)
-    .then(saved => {
+    .then((saved) => {
       res.status(201).json({
         saved,
       });
     })
-    .catch(error => {
+    .catch((error) => {
       res.status(500).json(error);
     });
 });
@@ -27,20 +27,54 @@ router.post("/login", validateUserContent, (req, res) => {
 
   Users.findBy({ username })
     .first()
-    .then(user => {
+    .then((user) => {
       if (user && bcrypt.compareSync(password, user.password)) {
         // generate token
         const token = generateToken(user);
 
+        const {
+          username,
+          total,
+          cupcakes,
+          toasters,
+          ovens,
+          industrialOvens,
+          friends,
+          chefs,
+          cupcakeGods,
+          toastersCost,
+          ovensCost,
+          industrialOvensCost,
+          friendsCost,
+          chefsCost,
+          cupcakeGodsCost,
+        } = user;
+
         res.status(200).json({
-          message: `Welcome ${user.username}!`,
-          token, //return the token upon login
+          data: {
+            username,
+            total,
+            cupcakes,
+            toasters,
+            ovens,
+            industrialOvens,
+            friends,
+            chefs,
+            cupcakeGods,
+            toastersCost,
+            ovensCost,
+            industrialOvensCost,
+            friendsCost,
+            chefsCost,
+            cupcakeGodsCost,
+          },
+          token: token, //return the token upon login
         });
       } else {
         res.status(401).json({ message: "Invalid Credentials" });
       }
     })
-    .catch(error => {
+    .catch((error) => {
       res.status(500).json(error);
     });
 });
@@ -54,7 +88,7 @@ function generateToken(user) {
     // role: user.role || "user"  (optional: if there's role in db schema)
   };
   const options = {
-    expiresIn: "7d",
+    expiresIn: "8h",
   };
   return jwt.sign(payload, jwtSecret, options);
 }

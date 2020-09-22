@@ -4,7 +4,7 @@ module.exports = {
   add,
   find,
   findBy,
-  findById
+  findById,
 };
 
 function find() {
@@ -12,7 +12,29 @@ function find() {
 }
 
 function findBy(filter) {
-  return db("users").where(filter);
+  return db("users")
+    .join("item_counts as counts", "users.id", "=", "counts.user_id")
+    .join("item_costs as costs", "users.id", "=", "costs.user_id")
+    .select(
+      "user.id",
+      "user.username",
+      "user.password",
+      "counts.total",
+      "counts.cupcakes",
+      "counts.toasters",
+      "counts.ovens",
+      "counts.industrialOvens",
+      "counts.friends",
+      "counts.chefs",
+      "counts.cupcakeGods",
+      "costs.toastersCost",
+      "costs.ovensCost",
+      "costs.industrialOvensCost",
+      "costs.friendsCost",
+      "costs.chefsCost",
+      "costs.cupcakeGodsCost"
+    )
+    .where(filter);
 }
 
 async function add(user) {
@@ -22,7 +44,5 @@ async function add(user) {
 }
 
 function findById(id) {
-  return db("users")
-    .where({ id })
-    .first();
+  return db("users").where({ id }).first();
 }
