@@ -1,9 +1,11 @@
 exports.up = function (knex) {
   return knex.schema.createTable("item_costs", (table) => {
     table
-      .foreign("user_id")
+      .integer("user_id")
+      .unsigned()
       .references("id")
       .inTable("users")
+      .onUpdate("CASCADE")
       .onDelete("CASCADE");
     table.integer("toastersCost").defaultTo(20);
     table.integer("ovensCost").defaultTo(100);
