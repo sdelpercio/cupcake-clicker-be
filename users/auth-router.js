@@ -13,9 +13,9 @@ router.post("/register", validateUserContent, (req, res) => {
 
   Users.add(user)
     .then((saved) => {
-      res.status(201).json({
-        saved,
-      });
+      res
+        .status(201)
+        .json({ data: { id: saved.id, username: saved.username } });
     })
     .catch((error) => {
       res.status(500).json(error);
@@ -75,7 +75,7 @@ router.post("/login", validateUserContent, (req, res) => {
       }
     })
     .catch((error) => {
-      res.status(500).json(error);
+      res.status(500).json({ error: error, msg: "login fail" });
     });
 });
 

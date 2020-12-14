@@ -16,9 +16,9 @@ function findBy(filter) {
     .join("item_counts as counts", "users.id", "=", "counts.user_id")
     .join("item_costs as costs", "users.id", "=", "costs.user_id")
     .select(
-      "user.id",
-      "user.username",
-      "user.password",
+      "users.id",
+      "users.username",
+      "users.password",
       "counts.total",
       "counts.cupcakes",
       "counts.toasters",
@@ -39,6 +39,31 @@ function findBy(filter) {
 
 async function add(user) {
   const [id] = await db("users").insert(user, "id");
+
+  db("item_costs")
+    .insert({
+      user_id: id,
+      toastersCost: 20,
+      ovensCost: 100,
+      industrialOvensCost: 500,
+      friendsCost: 1000,
+      chefsCost: 5000,
+      cupcakeGodsCost: 100000,
+    })
+    .then();
+  db("item_counts")
+    .insert({
+      user_id: id,
+      total: 0,
+      cupcakes: 0,
+      toasters: 0,
+      ovens: 0,
+      industrialOvens: 0,
+      friends: 0,
+      chefs: 0,
+      cupcakeGods: 0,
+    })
+    .then();
 
   return findById(id);
 }
