@@ -33,7 +33,24 @@ router.post("/login", validateUserContent, (req, res) => {
         const token = generateToken(user);
 
         res.status(200).json({
-          user,
+          user: {
+            username: user.username,
+            id: user.id,
+            total: user.total,
+            cupcakes: user.cupcakes,
+            toasters: user.toasters,
+            ovens: user.ovens,
+            industrialOvens: user.industrialOvens,
+            friends: user.friends,
+            chefs: user.chefs,
+            cupcakeGods: user.cupcakeGods,
+            toastersCost: user.toastersCost,
+            ovensCost: user.ovensCost,
+            industrialOvensCost: user.industrialOvensCost,
+            friendsCost: user.friendsCost,
+            chefsCost: user.chefsCost,
+            cupcakeGodsCost: user.cupcakeGodsCost,
+          },
           token: token, //return the token upon login
         });
       } else {
