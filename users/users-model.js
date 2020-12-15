@@ -5,6 +5,8 @@ module.exports = {
   find,
   findBy,
   findById,
+  updateItemCounts,
+  updateItemCosts,
 };
 
 function find() {
@@ -73,7 +75,7 @@ function findById(id) {
 }
 
 function updateItemCounts(user_id, update) {
-  db("item_counts").where({ user_id }).update(
+  return db("item_counts").where({ user_id }).update(
     {
       total: update.total,
       cupcakes: update.cupcakes,
@@ -88,7 +90,7 @@ function updateItemCounts(user_id, update) {
   );
 }
 function updateItemCosts(user_id, update) {
-  db("item_costs").where({ user_id }).update(
+  return db("item_costs").where({ user_id }).update(
     {
       toastersCost: update.toastersCost,
       ovensCost: update.ovensCost,
