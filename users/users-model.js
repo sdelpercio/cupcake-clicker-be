@@ -20,7 +20,6 @@ function findBy(filter) {
     .select(
       "users.id",
       "users.username",
-      "users.password",
       "counts.total",
       "counts.cupcakes",
       "counts.toasters",
