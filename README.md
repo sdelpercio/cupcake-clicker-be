@@ -24,7 +24,9 @@ DB_ENV=development
 4. Log into your account upon opening
 5. Click on server at left, login again
 6. Create new database under PostgreSQL 12
+
 <img src="https://i.ibb.co/P64Fg3n/pgadmin1.png" alt="pgadmin database creation" border="0"/></br>
+
 7. Name your database 'cc-be' and click 'save' at bottom right
 8. Make sure your server is running, and try making a request using Postman!
 
